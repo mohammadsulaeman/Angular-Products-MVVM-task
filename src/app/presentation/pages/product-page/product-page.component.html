@@ -1,0 +1,93 @@
+<div class="search-container">
+  <input
+    [(ngModel)]="keyword"
+    placeholder="Search Product"
+    class="search-input">
+
+  <button (click)="search()" class="btn-search">
+    Search
+  </button>
+</div>
+
+<div class="table-responsive">
+  <table class="product-table">
+    <thead>
+      <tr>
+        <th>Image</th>
+        <th>Title</th>
+        <th>Brand</th>
+        <th>Price</th>
+        <th width="120">Action</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <ng-container *ngFor="let product of (vm.products$ | async)">
+
+        <!-- Product Row -->
+        <tr>
+          <td>
+            <img
+              [src]="product.thumbnail"
+              class="product-image"
+              alt="{{ product.title }}">
+          </td>
+
+          <td>{{ product.title }}</td>
+
+          <td>{{ product.brand }}</td>
+
+          <td>${{ product.price }}</td>
+
+          <td>
+            <button
+              class="btn-detail"
+              (click)="showDetail(product.id)">
+              Detail
+            </button>
+          </td>
+        </tr>
+
+        <!-- Detail Row -->
+        <tr *ngIf="(vm.selectedProduct$ | async)?.id === product.id">
+          <td colspan="5">
+            <div class="detail-container">
+
+              <div class="detail-header">
+                <h3>{{ (vm.selectedProduct$ | async)?.title }}</h3>
+
+                <button
+                  class="btn-close"
+                  (click)="closeDetail()">
+                  Close
+                </button>
+              </div>
+
+              <p>
+                <strong>Description :</strong>
+                {{ (vm.selectedProduct$ | async)?.description }}
+              </p>
+
+              <p>
+                <strong>Rating :</strong>
+                {{ (vm.selectedProduct$ | async)?.rating }}
+              </p>
+
+              <p>
+                <strong>Stock :</strong>
+                {{ (vm.selectedProduct$ | async)?.stock }}
+              </p>
+
+              <p>
+                <strong>Warranty :</strong>
+                {{ (vm.selectedProduct$ | async)?.warrantyInformation }}
+              </p>
+
+            </div>
+          </td>
+        </tr>
+
+      </ng-container>
+    </tbody>
+  </table>
+</div>
